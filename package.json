@@ -1,0 +1,27 @@
+{
+  "name": "pump-launcher",
+  "version": "1.0.0",
+  "main": "launcher.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Malakia.sol - Tg: @KingMalakia",
+  "license": "ISC",
+  "description": "This repository contains a bot for automated trading on the Solana blockchain using Pump.fun and Jito bundles to maximize efficiency and transaction speed. The bot interacts with the PumpPortal API to create and manage tokens automatically.",
+  "dependencies": {
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.98.0",
+    "body-parser": "^1.20.3",
+    "bs58": "^6.0.0",
+    "chalk": "^5.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "form-data": "^4.0.1",
+    "ora": "^8.1.1",
+    "readline": "^1.3.0",
+    "ws": "^8.18.1"
+  }
+}
