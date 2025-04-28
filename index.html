@@ -7,36 +7,49 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="token-info">
-      <h2>Token Monitor</h2>
-      <div id="token-address">Waiting for token...</div>
-    </div>
+    <div class="app-container">
+      <!-- Левая панель (мониторинг) -->
+      <div class="monitor-panel">
+        <div class="token-info">
+          <h2>Token Monitor</h2>
+          <div id="token-address">Waiting for token...</div>
+        </div>
 
-    <div class="summary">
-      <div class="summary-header">Summary</div>
-      <div class="summary-content">
-        <div class="summary-item">
-          <div>Bought</div>
-          <div id="total-bought" class="buy">0 SOL</div>
+        <div class="summary">
+          <div class="summary-header">Summary</div>
+          <div class="summary-content">
+            <div class="summary-item">
+              <div>Bought</div>
+              <div id="total-bought" class="buy">0 SOL</div>
+            </div>
+            <div class="summary-item">
+              <div>Sold</div>
+              <div id="total-sold" class="sell">0 SOL</div>
+            </div>
+            <div class="summary-item">
+              <div>Net</div>
+              <div id="total-net" class="total-amount">0 SOL</div>
+            </div>
+          </div>
         </div>
-        <div class="summary-item">
-          <div>Sold</div>
-          <div id="total-sold" class="sell">0 SOL</div>
+        <div class="header">
+          <div class="amount">Amount SOL</div>
+          <div class="mc">MC</div>
+          <div class="trader">Trader</div>
         </div>
-        <div class="summary-item">
-          <div>Net</div>
-          <div id="total-net" class="total-amount">0 SOL</div>
+
+        <div id="transaction-list" class="transaction-list">
+          <!-- Transactions will be added here dynamically -->
         </div>
       </div>
-    </div>
-    <div class="header">
-      <div class="amount">Amount SOL</div>
-      <div class="mc">MC</div>
-      <div class="trader">Trader</div>
-    </div>
-
-    <div id="transaction-list" class="transaction-list">
-      <!-- Transactions will be added here dynamically -->
+      
+      <!-- Правая панель (управление) -->
+      <div class="control-panel">
+        <div class="control-panel-header">Token Controls</div>
+        <button id="sell-tokens" class="action-button">Sell Tokens</button>
+        <button id="priority-sell" class="action-button danger">Priority Sell</button>
+        <button id="jito-sell" class="action-button primary">Sell via Jito</button>
+      </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -47,6 +60,27 @@
       const totalBoughtElement = document.getElementById('total-bought');
       const totalSoldElement = document.getElementById('total-sold');
       const totalNetElement = document.getElementById('total-net');
+      
+      // Кнопки на правой панели
+      const sellTokensButton = document.getElementById('sell-tokens');
+      const prioritySellButton = document.getElementById('priority-sell');
+      const jitoSellButton = document.getElementById('jito-sell');
+      
+      // Слушатели событий для кнопок
+      sellTokensButton.addEventListener('click', function() {
+        console.log('Sell tokens clicked');
+        socket.emit('sellTokens');
+      });
+      
+      prioritySellButton.addEventListener('click', function() {
+        console.log('Priority sell clicked');
+        socket.emit('prioritySell');
+      });
+      
+      jitoSellButton.addEventListener('click', function() {
+        console.log('Jito sell clicked');
+        socket.emit('jitoSell');
+      });
 
       // Listen for token subscription events
       socket.on('tokenSubscription', (tokenAddress) => {
