@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Token Monitor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="token-info">
+      <h2>Token Monitor</h2>
+      <div id="token-address">Waiting for token...</div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-header">Summary</div>
+      <div class="summary-content">
+        <div class="summary-item">
+          <div>Bought</div>
+          <div id="total-bought" class="buy">0 SOL</div>
+        </div>
+        <div class="summary-item">
+          <div>Sold</div>
+          <div id="total-sold" class="sell">0 SOL</div>
+        </div>
+        <div class="summary-item">
+          <div>Net</div>
+          <div id="total-net" class="total-amount">0 SOL</div>
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="amount">Amount SOL</div>
+      <div class="mc">MC</div>
+      <div class="trader">Trader</div>
+    </div>
+
+    <div id="transaction-list" class="transaction-list">
+      <!-- Transactions will be added here dynamically -->
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const transactionList = document.getElementById('transaction-list');
+      const tokenAddressElement = document.getElementById('token-address');
+      const totalBoughtElement = document.getElementById('total-bought');
+      const totalSoldElement = document.getElementById('total-sold');
+      const totalNetElement = document.getElementById('total-net');
+
+      // Listen for token subscription events
+      socket.on('tokenSubscription', (tokenAddress) => {
+        tokenAddressElement.textContent = `Monitoring token: ${tokenAddress}`;
+      });
+
+      // Listen for new transactions
+      socket.on('transaction', (transaction) => {
+        const { txType, traderPublicKey, solAmount, timestamp } = transaction;
+
+        const transactionElement = document.createElement('div');
+        transactionElement.className = 'transaction';
+
+        const isBuy = txType.toUpperCase() === 'BUY';
+        const amountClass = isBuy ? 'buy' : 'sell';
+        const icon = isBuy ? '🟢' : '🔴';
+
+        transactionElement.innerHTML = `
+                <div class="amount ${amountClass}">
+                    <span class="icon">${icon}</span>${Number(solAmount).toFixed(3)}
+                </div>
+                <div class="mc">$${(Number(solAmount) * 4000).toFixed(2)}K</div>
+                <div class="trader">${traderPublicKey.slice(-3)}</div>
+            `;
+
+        // Add to the top of the list
+        transactionList.insertBefore(transactionElement, transactionList.firstChild);
+      });
+
+      // Listen for counter updates
+      socket.on('counterUpdate', (counters) => {
+        const { totalBought, totalSold, netAmount } = counters;
+
+        totalBoughtElement.textContent = `${totalBought.toFixed(3)} SOL`;
+        totalSoldElement.textContent = `${totalSold.toFixed(3)} SOL`;
+
+        const netAmountElement = document.getElementById('total-net');
+        netAmountElement.textContent = `${netAmount.toFixed(3)} SOL`;
+
+        // Change color based on whether net is positive or negative
+        if (netAmount > 0) {
+          netAmountElement.style.color = '#4caf50';
+        } else if (netAmount < 0) {
+          netAmountElement.style.color = '#f44336';
+        } else {
+          netAmountElement.style.color = '#e0e0e0';
+        }
+      });
+    </script>
+  </body>
+</html>

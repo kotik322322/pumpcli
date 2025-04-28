@@ -1,0 +1,80 @@
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    font-weight: bold;
+  }
+  .transaction-list {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  .transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #222;
+  }
+  .amount {
+    width: 25%;
+    font-weight: bold;
+  }
+  .mc {
+    width: 25%;
+  }
+  .trader {
+    width: 25%;
+  }
+  .age {
+    width: 25%;
+    text-align: right;
+  }
+  .buy {
+    color: #4caf50;
+  }
+  .sell {
+    color: #f44336;
+  }
+  .icon {
+    margin-right: 5px;
+  }
+  .summary {
+    background-color: #1e1e1e;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+  }
+  .summary-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .summary-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .summary-item {
+    text-align: center;
+    flex: 1;
+  }
+  .total-amount {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4caf50;
+  }
+  .token-info {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-radius: 4px;
+  }
+
+  #token-address {
+    color: red;
+  }
